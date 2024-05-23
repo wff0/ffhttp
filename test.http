@@ -1,0 +1,6 @@
+### GET request to example server
+GET http://localhost:9999/hello/fengfan
+
+###
+
+GET http://localhost:9999/assert/css/fengfan.css

@@ -12,7 +12,7 @@ type Engine struct {
 
 func New() *Engine {
 	return &Engine{
-		route: newRoute(),
+		route: newRouter(),
 	}
 }
 
