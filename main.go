@@ -2,11 +2,24 @@ package main
 
 import (
 	"ffhttp/ff"
+	"log"
 	"net/http"
+	"time"
 )
+
+func onlyForV2() ff.HandlerFunc {
+	return func(c *ff.Context) {
+		t := time.Now()
+
+		c.Next()
+
+		log.Printf("[%d] %s in %v for group v2", c.StatusCode, c.Req.RequestURI, time.Since(t))
+	}
+}
 
 func main() {
 	r := ff.New()
+	r.Use(ff.Logger())
 
 	v1 := r.Group("/v1")
 	{
@@ -19,6 +32,7 @@ func main() {
 	}
 
 	v2 := r.Group("/v2")
+	v2.Use(onlyForV2())
 	{
 		v2.POST("/login", func(c *ff.Context) {
 			c.Json(http.StatusOK, ff.H{
