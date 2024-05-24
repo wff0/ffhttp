@@ -31,7 +31,7 @@ func FormatAsDate(t time.Time) string {
 
 func main() {
 	r := ff.New()
-	r.Use(ff.Logger())
+	r.Use(ff.Logger(), ff.Recovery())
 
 	r.SetFuncMap(template.FuncMap{
 		"FormatAsDate": FormatAsDate,
@@ -44,6 +44,11 @@ func main() {
 
 	r.GET("/", func(c *ff.Context) {
 		c.HTML(http.StatusOK, "css.tmpl", nil)
+	})
+
+	r.GET("/panic", func(c *ff.Context) {
+		names := []string{"fengfan"}
+		c.String(http.StatusOK, names[1000])
 	})
 
 	r.GET("/students", func(c *ff.Context) {
